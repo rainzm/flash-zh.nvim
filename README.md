@@ -2,7 +2,7 @@
 
 基于[flash.nvim](https://github.com/folke/flash.nvim)以及小鹤双拼，neovim 中文跳转插件。
 
-![iShot_2023-10-05_02 33 40](https://github.com/rainzm/flash-zh.nvim/assets/22927169/94981cdb-c39e-4fc1-a94e-c19702397a86)
+![iShot_2023-10-05_02 37 31](https://github.com/rainzm/flash-zh.nvim/assets/22927169/fdd665ed-0b5e-40d8-97b2-0ec9db04891c)
 
 
 ## 安装
