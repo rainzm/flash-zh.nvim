@@ -9,7 +9,7 @@
 ```lua
 return {
 	{
-		"rainzm/flashzh.nvim",
+		"rainzm/flash-zh.nvim",
 		event = "VeryLazy",
 		dependencies = "folke/flash.nvim",
 		keys = {
@@ -17,7 +17,7 @@ return {
 				"s",
 				mode = { "n", "x", "o" },
 				function()
-					require("flashzh").jump()
+					require("flash-zh").jump()
 				end,
 				desc = "Flash between Chinese",
 			},
