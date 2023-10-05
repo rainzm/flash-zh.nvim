@@ -5,7 +5,7 @@ local M = {}
 
 function M.jump()
 	flash.jump({
-		labels = "1234567890",
+		labels = "ASDFGHJKLQWERTYUIOPZXCVBNM",
 		search = {
 			mode = M._zh_mode,
 		},
