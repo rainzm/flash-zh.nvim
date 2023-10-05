@@ -45,6 +45,6 @@ label 使用"1234567890"，这样可以完全避免和拼音冲突。
 
 **如果想要跳转的地方没有 label 出现，接着输入即可，和查找一样。**
 
-## Alternatives
+## 感谢
 
 - [hop-zh-by-flypy](https://github.com/zzhirong/hop-zh-by-flypy)
