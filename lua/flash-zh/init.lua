@@ -3,13 +3,14 @@ local flypy = require("flash-zh.flypy")
 
 local M = {}
 
-function M.jump()
-	flash.jump({
+function M.jump(opts)
+	opts = vim.tbl_deep_extend("force", {
 		labels = "ASDFGHJKLQWERTYUIOPZXCVBNM",
 		search = {
 			mode = M._zh_mode,
 		},
-	})
+	}, opts or {})
+	flash.jump(opts)
 end
 
 function M._zh_mode(str)
