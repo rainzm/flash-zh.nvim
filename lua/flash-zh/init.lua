@@ -13,7 +13,6 @@ function M.jump()
 end
 
 function M._zh_mode(str)
-	print(string.format("str: %s", str))
 	local regexs = {}
 	while string.len(str) > 1 do
 		regexs[#regexs + 1] = flypy.char2patterns[string.sub(str, 1, 2)]
