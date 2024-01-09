@@ -48,3 +48,7 @@ label 使用大写字母，这样可以避免和拼音冲突。
 ## 感谢
 
 - [hop-zh-by-flypy](https://github.com/zzhirong/hop-zh-by-flypy)
+
+## 推荐
+
+- [rime-ls](https://github.com/wlh320/rime-ls) 通过补全的方式输入中文
