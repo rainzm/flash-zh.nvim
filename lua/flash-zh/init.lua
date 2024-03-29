@@ -5,10 +5,13 @@ local M = {}
 
 function M.jump(opts)
 	opts = vim.tbl_deep_extend("force", {
-		labels = "ASDFGHJKLQWERTYUIOPZXCVBNM",
+		labels = "asdfghjklqwertyuiopzxcvbnm",
 		search = {
 			mode = M._zh_mode,
 		},
+		labeler = function(_, state)
+			require("flash-zh.labeler").new(state):update()
+		end,
 	}, opts or {})
 	flash.jump(opts)
 end
