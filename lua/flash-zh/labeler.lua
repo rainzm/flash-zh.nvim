@@ -1,3 +1,4 @@
+local pinyin = require("flash-zh.pinyin")
 local M = {}
 M.__index = M
 
@@ -30,33 +31,37 @@ function M:update()
 	end
 end
 
-local pingyin = require("flash-zh.pinyin")
--- Returns valid labels for the current search pattern
--- in this window.
+-- Returns valid labels for the current search pattern in this window.
 ---@param labels string[]
 ---@return string[] returns labels to skip or `nil` when all labels should be skipped
-function M:skip1(win, labels)
+function M:skip(win, labels)
 	local prefix = self.state.pattern.pattern
 	for _, match in ipairs(self.state.results) do
 		if match.win == win then
 			local buf = vim.api.nvim_win_get_buf(match.win)
 			local start_line, end_line = match.pos[1], match.end_pos[1]
+			if start_line ~= end_line then
+				goto continue
+			end
+
 			local lines = vim.api.nvim_buf_get_lines(buf, start_line - 1, end_line, false)
 			local start_col, end_col = match.pos[2] + 1, match.end_pos[2] + 2
-			local line = lines[1]
-			local substring = string.sub(line, start_col, end_col + 4)
-			local py = pinyin(substring, "")
+			if #lines == 0 then
+				goto continue
+			end
+
+			local py = pinyin.pinyin(string.sub(lines[1], start_col, end_col + 4), "")
 			local prefix_len = string.len(prefix)
 			local char = string.sub(py, prefix_len + 1, prefix_len + 1)
+
 			labels = vim.tbl_filter(function(c)
-				-- when ignorecase is set, we need to skip
-				-- both the upper and lower case labels
 				if vim.go.ignorecase then
 					return c:lower() ~= char:lower()
 				end
 				return c ~= char
 			end, labels)
 		end
+		::continue::
 	end
 	return labels
 end
@@ -73,7 +78,7 @@ function M:reset()
 	end
 	if not self.state.opts.search.max_length or #self.state.pattern() < self.state.opts.search.max_length then
 		for _, win in pairs(self.state.wins) do
-			self.labels = self:skip1(win, self.labels)
+			self.labels = self:skip(win, self.labels)
 		end
 	end
 	for _, m in ipairs(self.state.results) do
