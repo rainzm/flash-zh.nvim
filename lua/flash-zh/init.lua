@@ -59,8 +59,10 @@ function M.parser(str, prefix)
 	elseif string.match(firstchar, "%a") then
 		local secondchar = string.sub(str, 2, 2)
 		if secondchar == "" then
+			local prefix2 = M.copy(prefix)
 			prefix[#prefix + 1] = { str = firstchar, type = "singlepin" }
-			return { prefix }
+			prefix2[#prefix2 + 1] = { str = firstchar, type = "alpha" }
+			return { prefix, prefix2 }
 		elseif string.match(secondchar, "%a") then
 			if flypy.char2patterns[firstchar .. secondchar] then
 				local prefix2 = M.copy(prefix)
@@ -70,7 +72,7 @@ function M.parser(str, prefix)
 				str = string.sub(str, 3, -1)
 				return M.merge_table(M.parser(str, prefix), M.parser(str2, prefix2))
 			else
-				prefix[#prefix + 1] = { str = firstchar, type = "singlepin" }
+				prefix[#prefix + 1] = { str = firstchar, type = "alpha" }
 				str = string.sub(str, 2, -1)
 				return (M.parser(str, prefix))
 			end
