@@ -29,6 +29,7 @@ function M.mix_mode(str)
 	end
 	regexs[#regexs] = [[\)]]
 	local ret = table.concat(regexs)
+	print(ret)
 	return ret, ret
 end
 
@@ -53,7 +54,7 @@ local nodes = {
 		return flypy.char2patterns[str]
 	end,
 	comma = function(str)
-		return flypy.char1patterns[str]
+		return flypy.comma[str]
 	end,
 	singlepin = function(str)
 		return flypy.char1patterns[str]
