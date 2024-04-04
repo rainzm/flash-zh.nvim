@@ -60,8 +60,8 @@ function M.parser(str, prefix)
 		local secondchar = string.sub(str, 2, 2)
 		if secondchar == "" then
 			local prefix2 = M.copy(prefix)
-			prefix[#prefix + 1] = { str = firstchar, type = "singlepin" }
-			prefix2[#prefix2 + 1] = { str = firstchar, type = "alpha" }
+			prefix[#prefix + 1] = { str = firstchar, type = "alpha" }
+			prefix2[#prefix2 + 1] = { str = firstchar, type = "singlepin" }
 			return { prefix, prefix2 }
 		elseif string.match(secondchar, "%a") then
 			if flypy.char2patterns[firstchar .. secondchar] then
