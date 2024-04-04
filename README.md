@@ -20,7 +20,9 @@ return {
 				"s",
 				mode = { "n", "x", "o" },
 				function()
-					require("flash-zh").jump()
+					require("flash-zh").jump(
+                        chines_only = false,
+                    )
 				end,
 				desc = "Flash between Chinese",
 			},
@@ -41,9 +43,8 @@ return {
 
 ## 使用
 
-~~label 默认使用大写字母，这样可以避免和拼音冲突。~~
-
-label 现在默认使用小写字母，通过自定义`flash.nvim`的 labeler ，以避免小写 label 和拼音的冲突。
+1. ~~label 默认使用大写字母，这样可以避免和拼音冲突。~~ label 现在默认使用小写字母，通过自定义`flash.nvim`的 labeler ，以避免小写 label 和拼音的冲突。
+2. 默认工作在中英混杂模式下（由[dirichy](https://github.com/dirichy)实现）；增加选项 `chinese_only` 使其工作在仅中文模式下。
 
 **如果想要跳转的地方没有 label 出现，接着输入即可，和查找一样。**
 

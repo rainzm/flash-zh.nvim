@@ -4,10 +4,14 @@ local flypy = require("flash-zh.flypy")
 local M = {}
 
 function M.jump(opts)
+	local mode = M.mix_mode
+	if opts.chinese_only then
+		mode = M.zh_mode
+	end
 	opts = vim.tbl_deep_extend("force", {
 		labels = "asdfghjklqwertyuiopzxcvbnm",
 		search = {
-			mode = M._zh_mode,
+			mode = mode,
 		},
 		labeler = function(_, state)
 			require("flash-zh.labeler").new(state):update()
@@ -16,7 +20,7 @@ function M.jump(opts)
 	flash.jump(opts)
 end
 
-function M._zh_mode(str)
+function M.mix_mode(str)
 	local all_possible_splits = M.parser(str)
 	local regexs = { [[\(]] }
 	for _, v in ipairs(all_possible_splits) do
@@ -27,6 +31,20 @@ function M._zh_mode(str)
 	local ret = table.concat(regexs)
 	return ret, ret
 end
+
+function M.zh_mode(str)
+	local regexs = {}
+	while string.len(str) > 1 do
+		regexs[#regexs + 1] = flypy.char2patterns[string.sub(str, 1, 2)]
+		str = string.sub(str, 3)
+	end
+	if string.len(str) == 1 then
+		regexs[#regexs + 1] = flypy.char1patterns[str]
+	end
+	local ret = table.concat(regexs)
+	return ret, ret
+end
+
 local nodes = {
 	alpha = function(str)
 		return "[" .. str .. string.upper(str) .. "]"
@@ -44,6 +62,7 @@ local nodes = {
 		return str
 	end,
 }
+
 function M.regex(parser)
 	local regexs = {}
 	for _, v in ipairs(parser) do
@@ -51,6 +70,7 @@ function M.regex(parser)
 	end
 	return table.concat(regexs)
 end
+
 function M.parser(str, prefix)
 	prefix = prefix or {}
 	local firstchar = string.sub(str, 1, 1)
@@ -97,12 +117,14 @@ function M.parser(str, prefix)
 		return M.parser(str, prefix)
 	end
 end
+
 function M.merge_table(tab1, tab2)
 	for i = 1, #tab2 do
 		table.insert(tab1, tab2[i])
 	end
 	return tab1
 end
+
 function M.copy(table)
 	local copy = {}
 	for k, v in pairs(table) do
