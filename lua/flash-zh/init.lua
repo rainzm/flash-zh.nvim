@@ -29,7 +29,6 @@ function M.mix_mode(str)
 	end
 	regexs[#regexs] = [[\)]]
 	local ret = table.concat(regexs)
-	print(ret)
 	return ret, ret
 end
 
