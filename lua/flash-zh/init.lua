@@ -59,6 +59,7 @@ local nodes = {
 		return flypy.char1patterns[str]
 	end,
 	other = function(str)
+		str = flypy.escape[str] or str
 		return str
 	end,
 }
