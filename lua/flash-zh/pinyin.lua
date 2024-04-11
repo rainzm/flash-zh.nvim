@@ -50,11 +50,18 @@ end
 
 local function init_py_table()
 	for k, v in pairs(flypy.char2patterns) do
-		local start_char, end_char = v:find("%[(.-)%]") -- 找到中括号中的内容
+		local start_char, end_char = v:find("%[(.-)%]")
 		v = v:sub(start_char + 1, end_char - 1)
 		for i = 1, utf8_len(v) do
 			local char = utf8_sub(v, i, 1)
-			--要寻找的字符串
+			py_table[char] = k
+		end
+	end
+	for k, v in pairs(flypy.comma) do
+		local start_char, end_char = v:find("%[(.-)%]")
+		v = v:sub(start_char + 1, end_char - 1)
+		for i = 1, utf8_len(v) do
+			local char = utf8_sub(v, i, 1)
 			py_table[char] = k
 		end
 	end
@@ -69,7 +76,7 @@ function M.pinyin(chars, separator)
 		if string.len(char) == 1 then
 			pinyin[i] = char
 		else
-			pinyin[i] = py_table[char]
+			pinyin[i] = py_table[char] or char
 		end
 	end
 	return table.concat(pinyin, separator)
