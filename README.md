@@ -4,41 +4,36 @@
 
 ![iShot_2023-10-05_19 32 53](https://github.com/rainzm/flash-zh.nvim/assets/22927169/4c3ca124-0fee-48a2-b7c6-17391afe8d0e)
 
-
 ## 安装
 
 - 依赖于[flash.nvim](https://github.com/folke/flash.nvim)
 - 使用 [lazy.nvim](https://github.com/folke/lazy.nvim) 进行安装:
+
 ```lua
-return {
-	{
-		"rainzm/flash-zh.nvim",
-		event = "VeryLazy",
-		dependencies = "folke/flash.nvim",
-		keys = {
-			{
-				"s",
-				mode = { "n", "x", "o" },
-				function()
-					require("flash-zh").jump(
-                        			chines_only = false,
-                    			)
-				end,
-				desc = "Flash between Chinese",
-			},
-		},
-	},
-	{
-		"folke/flash.nvim",
-		event = "VeryLazy",
-		opts = {
-			highlight = {
-				backdrop = false,
-				matches = false,
-			},
-		},
+return {{
+    "rainzm/flash-zh.nvim",
+    event = "VeryLazy",
+    dependencies = "folke/flash.nvim",
+    keys = {{
+        "s",
+        mode = {"n", "x", "o"},
+        function()
+            require("flash-zh").jump({
+                chines_only = false
+            })
+        end,
+        desc = "Flash between Chinese"
+    }}
+}, {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {
+        highlight = {
+            backdrop = false,
+            matches = false
+        }
     }
-}
+}}
 ```
 
 ## 使用
