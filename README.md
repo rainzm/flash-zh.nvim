@@ -19,7 +19,7 @@ return {{
         mode = {"n", "x", "o"},
         function()
             require("flash-zh").jump({
-                chines_only = false
+                chinese_only = false
             })
         end,
         desc = "Flash between Chinese"
