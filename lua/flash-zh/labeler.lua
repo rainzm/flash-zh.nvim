@@ -50,15 +50,23 @@ function M:skip(win, labels)
 				goto continue
 			end
 
-			local py = pinyin.pinyin(string.sub(lines[1], start_col, end_col + 4), "")
+			local pys = pinyin.pinyin(string.sub(lines[1], start_col, end_col + 4), "")
 			local prefix_len = string.len(prefix)
-			local char = string.sub(py, prefix_len + 1, prefix_len + 1)
+			local filter_chars = {}
+			for i = 1, #pys do
+				filter_chars[i] = string.sub(pys[i], prefix_len + 1, prefix_len + 1)
+			end
 
 			labels = vim.tbl_filter(function(c)
 				if vim.go.ignorecase then
 					return c:lower() ~= char:lower()
 				end
-				return c ~= char
+                for _, char in ipairs(filter_chars) do
+                    if c == char then
+                        return false
+                    end
+                end
+                return true
 			end, labels)
 		end
 		::continue::
