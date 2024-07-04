@@ -59,14 +59,19 @@ function M:skip(win, labels)
 
 			labels = vim.tbl_filter(function(c)
 				if vim.go.ignorecase then
-					return c:lower() ~= char:lower()
+					for _, char in ipairs(filter_chars) do
+						if c:lower() == char:lower() then
+							return false
+						end
+					end
+					return true
 				end
-                for _, char in ipairs(filter_chars) do
-                    if c == char then
-                        return false
-                    end
-                end
-                return true
+				for _, char in ipairs(filter_chars) do
+					if c == char then
+						return false
+					end
+				end
+				return true
 			end, labels)
 		end
 		::continue::
