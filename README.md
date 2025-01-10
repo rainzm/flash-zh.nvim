@@ -44,6 +44,32 @@ return {{
 
 **如果想要跳转的地方没有 label 出现，接着输入即可，和查找一样。**
 
+### 自定义匹配字符
+
+- 你可以覆盖、或是追加字符到默认的匹配字符集。
+
+    ```lua
+    require('flash-zh').setup {
+        char_map = {
+            -- Override default mapping in `flypy.comma`
+            comma = {
+                [']'] = ']」', -- A string of chars to match for, with no separator. No need to escape.
+                ['!'] = '!！', -- You can add a symbol that isn't present in the default table.
+            },
+            -- Append to `flypy.comma`
+            append_comma = {
+                ['.'] = '…',
+            },
+            -- Append to `flypy.char1patterns`
+            append_char1 = {
+                ['a'] = 'äÄ',
+            },
+            -- Append to `flypy.char2patterns`
+            append_char2 = {},
+        }
+    }
+    ```
+
 ## 感谢
 
 - [hop-zh-by-flypy](https://github.com/zzhirong/hop-zh-by-flypy)
