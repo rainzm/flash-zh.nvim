@@ -75,6 +75,10 @@ end
 function M.parser(str, prefix)
 	prefix = prefix or {}
 	local firstchar = string.sub(str, 1, 1)
+	local chars = {}
+	for k, _ in pairs(flypy.comma) do
+		table.insert(chars, k)
+	end
 	if firstchar == "" then
 		return { prefix }
 	elseif string.match(firstchar, "%a") then
@@ -97,7 +101,7 @@ function M.parser(str, prefix)
 				str = string.sub(str, 2, -1)
 				return (M.parser(str, prefix))
 			end
-		elseif string.match(secondchar, "[%.,?'\"%[%];:]") then
+		elseif vim.list_contains(chars, secondchar) then
 			prefix[#prefix + 1] = { str = firstchar, type = "alpha" }
 			prefix[#prefix + 1] = { str = secondchar, type = "comma" }
 			str = string.sub(str, 3, -1)
@@ -108,7 +112,7 @@ function M.parser(str, prefix)
 			str = string.sub(str, 3, -1)
 			return M.parser(str, prefix)
 		end
-	elseif string.match(firstchar, "[%.,?'\"%[%];:]") then
+	elseif vim.list_contains(chars, firstchar) then
 		prefix[#prefix + 1] = { str = firstchar, type = "comma" }
 		str = string.sub(str, 2, -1)
 		return M.parser(str, prefix)
@@ -132,6 +136,63 @@ function M.copy(table)
 		copy[k] = v
 	end
 	return copy
+end
+
+-- @param opts table
+-- @field opts.char_map table Char map for flypy.
+-- @field[opt] opts.char_map.comma table Override the default comma map.
+-- @field[opt] opts.char_map.append_comma table Append to the default comma map.
+-- @field[opt] opts.char_map.append_char1 table Append to the default char1patterns map.
+-- @field[opt] opts.char_map.append_char2 table Append to the default char2patterns map.
+function M.setup(opts)
+	opts = opts or {}
+	if not opts.char_map then
+		return
+	end
+	local to_escape = "\\^$*+?.%|[]()"
+	if opts.char_map.comma then
+		for k, v in pairs(opts.char_map.comma) do
+			if #k ~= 1 then
+				error("comma key must be a single character")
+			else
+				v = vim.fn.escape(v, to_escape)
+				flypy.comma[k] = "[" .. v .. "]"
+			end
+		end
+	end
+	if opts.char_map.append_comma then
+		for k, v in pairs(opts.char_map.append_comma) do
+			if #k ~= 1 then
+				error("append_comma key must be a single character")
+			else
+				local chars = flypy.comma[k] or ""
+				chars = string.sub(chars, 2, -2) .. vim.fn.escape(v, to_escape)
+				flypy.comma[k] = "[" .. chars .. "]"
+			end
+		end
+	end
+	if opts.char_map.append_char1 then
+		for k, v in pairs(opts.char_map.append_char1) do
+			if #k ~= 1 then
+				error("append_char1 key must be a single character")
+			else
+				local chars = flypy.char1patterns[k] or ""
+				chars = string.sub(chars, 2, -2) .. vim.fn.escape(v, to_escape)
+				flypy.char1patterns[k] = "[" .. chars .. "]"
+			end
+		end
+	end
+	if opts.char_map.append_char2 then
+		for k, v in pairs(opts.char_map.append_char2) do
+			if #k ~= 2 then
+				error("append_char2 key must be two characters")
+			else
+				local chars = flypy.char2patterns[k] or ""
+				chars = string.sub(chars, 2, -2) .. vim.fn.escape(v, to_escape)
+				flypy.char2patterns[k] = "[" .. chars .. "]"
+			end
+		end
+	end
 end
 
 return M
