@@ -81,7 +81,7 @@ function M.parser(str, prefix)
 	end
 	if firstchar == "" then
 		return { prefix }
-	elseif string.match(firstchar, "%a") then
+	elseif string.match(firstchar, "%l") then
 		local secondchar = string.sub(str, 2, 2)
 		if secondchar == "" then
 			local prefix2 = M.copy(prefix)
