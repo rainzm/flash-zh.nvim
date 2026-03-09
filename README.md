@@ -1,6 +1,6 @@
 # flash-zh.nvim
 
-基于[flash.nvim](https://github.com/folke/flash.nvim)以及小鹤双拼，neovim 中文跳转插件。
+基于[flash.nvim](https://github.com/folke/flash.nvim)的 Neovim 中文跳转插件，支持小鹤双拼（默认）与拼音加加双拼。
 
 ![iShot_2023-10-05_19 32 53](https://github.com/rainzm/flash-zh.nvim/assets/22927169/4c3ca124-0fee-48a2-b7c6-17391afe8d0e)
 
@@ -44,6 +44,19 @@ return {{
 
 **如果想要跳转的地方没有 label 出现，接着输入即可，和查找一样。**
 
+### 选择双拼方案
+
+插件内置两套方案：
+
+- `flypy`：小鹤双拼（默认）
+- `pyjj`：拼音加加双拼
+
+```lua
+require("flash-zh").setup({
+  scheme = "pyjj",
+})
+```
+
 ### 自定义匹配字符
 
 - 你可以覆盖、或是追加字符到默认的匹配字符集。
@@ -73,4 +86,3 @@ return {{
 ## 感谢
 
 - [hop-zh-by-flypy](https://github.com/zzhirong/hop-zh-by-flypy)
-

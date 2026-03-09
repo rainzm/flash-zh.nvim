@@ -1,20 +1,26 @@
-local flypy = require("flash-zh.flypy")
+local char_map = require("flash-zh.char_map")
 
 local M = {}
 
-local py_table = {}
-local mt = {}
-setmetatable(py_table, { __index = mt })
+local caches = {} ---@type table<string, table>
 
-function py_table:insert(char, pinyin)
-	if not self[char] then
-		self[char] = {}
+local function new_py_table()
+	local t = {}
+	local mt = {}
+	setmetatable(t, { __index = mt })
+
+	function t:insert(char, pinyin)
+		if not self[char] then
+			self[char] = {}
+		end
+		table.insert(self[char], pinyin)
 	end
-	table.insert(self[char], pinyin)
-end
 
-function py_table:find(char)
-	return self[char]
+	function t:find(char)
+		return self[char]
+	end
+
+	return t
 end
 
 local function get_char_size(char) --获取单个字符长度
@@ -62,7 +68,10 @@ local function utf8_sub(str, startChar, numChars) --截取中文字符串
 end
 
 local function init_py_table()
-	for k, v in pairs(flypy.char2patterns) do
+	local map = char_map.get()
+	local py_table = new_py_table()
+
+	for k, v in pairs(map.char2patterns) do
 		local start_char, end_char = v:find("%[(.-)%]")
 		v = v:sub(start_char + 1, end_char - 1)
 		for i = 1, utf8_len(v) do
@@ -70,7 +79,7 @@ local function init_py_table()
 			py_table:insert(char, k)
 		end
 	end
-	for k, v in pairs(flypy.comma) do
+	for k, v in pairs(map.comma) do
 		local start_char, end_char = v:find("%[(.-)%]")
 		v = v:sub(start_char + 1, end_char - 1)
 		for i = 1, utf8_len(v) do
@@ -78,6 +87,8 @@ local function init_py_table()
 			py_table:insert(char, k)
 		end
 	end
+
+	return py_table
 end
 
 local function append_to_pinyins(pinyins, suffixes)
@@ -94,6 +105,13 @@ local function append_to_pinyins(pinyins, suffixes)
 end
 
 function M.pinyin(chars)
+	local name = char_map.name()
+	local py_table = caches[name]
+	if not py_table then
+		py_table = init_py_table()
+		caches[name] = py_table
+	end
+
 	local pinyins = {}
 	for i = 1, utf8_len(chars) do
 		local char = utf8_sub(chars, i, 1)
@@ -116,5 +134,4 @@ function M.pinyin(chars)
 	return result
 end
 
-init_py_table()
 return M
