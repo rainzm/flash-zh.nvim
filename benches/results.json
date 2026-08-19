@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "neovim": "0.12.4",
+    "seed": 42,
+    "lines_per_case": "20-60",
+    "warmup_passes": 1,
+    "measured_passes": 3,
+    "statistic": "median of 3 passes, per case",
+    "cpu": "Apple M4 Pro",
+    "cases": 1050,
+    "binary_startup_ms": 7.767,
+    "note": "rust path includes the per-keystroke process spawn (vim.system + JSON), same as live usage",
+    "process_spawn_ms": 0.859,
+    "os": "Darwin 27.0.0 (arm64)",
+    "date": "2026-08-19"
+  },
+  "categories": {
+    "zh_ja": {
+      "vim_regex_failures": 1,
+      "cases": 350,
+      "languages": [
+        "zh",
+        "jp"
+      ],
+      "vim_ms": {
+        "mean": 10.921,
+        "p50": 1.153,
+        "p95": 66.461
+      },
+      "rust_ms": {
+        "mean": 9.973000000000001,
+        "p50": 9.032999999999999,
+        "p95": 16.974
+      },
+      "speedup_mean": 0.732,
+      "mean_ratio": 1.095,
+      "p95_ratio": 3.915
+    },
+    "zh_ja_ko_en": {
+      "vim_regex_failures": 1,
+      "cases": 350,
+      "languages": [
+        "zh",
+        "jp",
+        "ko",
+        "en"
+      ],
+      "vim_ms": {
+        "mean": 16.112,
+        "p50": 2.517,
+        "p95": 74.121
+      },
+      "rust_ms": {
+        "mean": 11.1,
+        "p50": 9.664999999999999,
+        "p95": 20.998
+      },
+      "speedup_mean": 0.957,
+      "mean_ratio": 1.452,
+      "p95_ratio": 3.53
+    },
+    "ja_ko": {
+      "vim_regex_failures": 2,
+      "cases": 350,
+      "languages": [
+        "jp",
+        "ko"
+      ],
+      "vim_ms": {
+        "mean": 24.005,
+        "p50": 2.343,
+        "p95": 91.812
+      },
+      "rust_ms": {
+        "mean": 10.915,
+        "p50": 9.269,
+        "p95": 19.654
+      },
+      "speedup_mean": 1.385,
+      "mean_ratio": 2.199,
+      "p95_ratio": 4.671
+    }
+  },
+  "overall": {
+    "vim_regex_failures": 4,
+    "vim_regex_failures_note": "cases whose alternation exceeded vim's NFA capture-group limit (E872); the Rust path matched them all",
+    "cases": 1050,
+    "vim_ms": {
+      "mean": 17.006,
+      "p50": 1.739,
+      "p95": 80.441
+    },
+    "rust_ms": {
+      "mean": 10.662,
+      "p50": 9.347,
+      "p95": 19.404
+    },
+    "speedup_mean": 1.024,
+    "mean_ratio": 1.595,
+    "p95_ratio": 4.145
+  }
+}
